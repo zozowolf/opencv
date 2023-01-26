@@ -56,7 +56,7 @@ int main()
 	waitKey(0); // attente de l'appui sur une touche dans la fenêtre graphique
 
 	// enregistrement de la nouvelle image
-	imwrite("./medias/SchtroumpfGaston.jpg", img);
+	imwrite("./medias/triangleGaston.jpg", img);
 
 	cin.get(); cin.ignore();
 	return EXIT_SUCCESS;

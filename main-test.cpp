@@ -29,30 +29,11 @@ int main()
 	frameToPixels(img, largeur, hauteur, pixels, true);
 	// On force à 0 les niveaux de rouge et de vert de chaque pixel de l'image
 
-	for (i = 0; i < hauteur / 2; i++)
+	for (i = 0; i < hauteur; i++)
 	{
-		for (j = 0; j < largeur / 2; j++)
-			pixels[i][j] = pixels[i][j] & 0xFF0000;
-	}
-
-	for (i = hauteur /2; i < hauteur; i++)
-	{
-		for (j = 0; j < largeur/2; j++)
-			pixels[i][j] = pixels[i][j] & 0x00FF00;
-	}
-
-	for (i = 0; i < hauteur / 2; i++)
-	{
-		for (j = largeur/2; j < largeur ; j++)
+		for (j = 0; j < largeur; j++)
 			pixels[i][j] = pixels[i][j] & 0x0000FF;
 	}
-
-	for (i = hauteur / 2; i < hauteur; i++)
-	{
-		for (j = largeur /2 ; j < largeur ; j++)
-			pixels[i][j] = pixels[i][j] & 0x00FFFF;
-	}
-
 
 	// On stocke le tableau pixels dans la frame avant son affichage 
 	PixelsToFrame(img, largeur, hauteur, pixels);
@@ -67,7 +48,7 @@ int main()
 	waitKey(0); // attente de l'appui sur une touche dans la fenêtre graphique
 
 	// enregistrement de la nouvelle image
-	imwrite("./medias/4couleursGaston.jpg", img);
+	imwrite("./medias/SchtroumpfGaston.jpg", img);
 
 	cin.get(); cin.ignore();
 	return EXIT_SUCCESS;
