@@ -31,27 +31,25 @@ int main()
 	frameToPixels(img, largeur, hauteur, pixels, true);
 	// On force à 0 les niveaux de rouge et de vert de chaque pixel de l'image
 
-	unsigned int R = 50, x0 = hauteur - 50, y0 = 50;
+	unsigned int r = 50, y0 = hauteur - 51, x0 = 50,x,y;
 
-	for (i = hauteur - 100; i < hauteur; i++)
+	for (j = 0; j < 100; j++)
 	{
-		for (j = 0; j < R * 2; j = )
-		{
-			pixels[i][j] = pixels[i][j] & 0xFF0000;
-		}
+		y = y0 + sqrt((r * r) - ((j - x0) * (j - x0)));
+		pixels[y][j] = pixels[y][j] & 0xFF0000;
 
+		y = y0 - sqrt((r * r) - ((j - x0) * (j - x0)));
+		pixels[y][j] = pixels[y][j] & 0xFF0000;
 	}
 
-	for (j = 0; j < largeur; j++)
+	for (i = hauteur - 101; i < hauteur; i++)
 	{
-		for (i = 0; i < R * 2; i = )
-		{
-			pixels[i][j] = pixels[i][j] & 0xFF0000;
-		}
+		x = x0 + sqrt((r * r) - ((i - y0) * (i - y0)));
+		pixels[i][x] = pixels[i][x] & 0xFF0000;
 
+		x = x0 - sqrt((r * r) - ((i - y0) * (i - y0)));
+		pixels[i][x] = pixels[i][x] & 0xFF0000;
 	}
-
-
 
 
 	// On stocke le tableau pixels dans la frame avant son affichage 
