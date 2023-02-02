@@ -1,5 +1,5 @@
 /*************************************************
-Fonctions utiles pour manipuler simplement 
+Fonctions utiles pour manipuler simplement
 les pixels d'une frame
 
 Auteur : V ROBERT
@@ -14,21 +14,21 @@ Version : 1.0
 using namespace std; // utilisation de l'espace de nommage standard
 
 /*==============================================
-Fonction pour mémoriser la frame 
+Fonction pour mémoriser la frame
 dans un tableau à deux dimensions
 
 Entrée : frame dont les octets R,V,B sont stockés
 à la suite dans le champ data
 ===============================================*/
-void frameToPixels(Mat frame, unsigned & width, unsigned & height, unsigned long ** & pixels, bool allouerMemoire)
+void frameToPixels(Mat frame, unsigned& width, unsigned& height, unsigned long**& pixels, bool allouerMemoire)
 {
-	unsigned i, j, x=0;
+	unsigned i, j, x = 0;
 	width = frame.size().width;
 	height = frame.size().height;
 
 	if (allouerMemoire)
 	{
-		pixels = new unsigned long *[height];
+		pixels = new unsigned long* [height];
 		for (i = 0; i < height; i++)
 			pixels[i] = new unsigned long[width];
 	}
@@ -37,7 +37,7 @@ void frameToPixels(Mat frame, unsigned & width, unsigned & height, unsigned long
 	{
 		for (j = 0; j < width; j++)
 		{
-			pixels[i][j] = frame.data[x]  + (frame.data[x + 1] << 8) + (frame.data[x + 2]<<16);
+			pixels[i][j] = frame.data[x] + (frame.data[x + 1] << 8) + (frame.data[x + 2] << 16);
 			x += 3;
 		}
 
@@ -53,7 +53,7 @@ dans la frame
 Entrée : Tableau à 2 dimensions
 Sortie ; frame
 ===============================================*/
-void PixelsToFrame(Mat & frame, unsigned width, unsigned height, unsigned long ** pixels)
+void PixelsToFrame(Mat& frame, unsigned width, unsigned height, unsigned long** pixels)
 {
 	unsigned i, j, x = 0;
 
@@ -61,7 +61,7 @@ void PixelsToFrame(Mat & frame, unsigned width, unsigned height, unsigned long *
 	{
 		for (j = 0; j < width; j++)
 		{
-			frame.data[x+2] = (uchar)(pixels[i][j] >> 16);
+			frame.data[x + 2] = (uchar)(pixels[i][j] >> 16);
 			frame.data[x + 1] = (uchar)(pixels[i][j] >> 8);
 			frame.data[x] = (uchar)pixels[i][j];
 			x += 3;
@@ -80,7 +80,7 @@ unsigned char niveauDeBleu(unsigned long pixel)
 	unsigned long result;
 	// je ne garde que les bits de bleu
 	result = pixel & 0xFF;
-	return (unsigned char) result; // on retourne le niveau de bleu
+	return (unsigned char)result; // on retourne le niveau de bleu
 }
 
 /*==============================================
@@ -93,7 +93,7 @@ unsigned char niveauDeVert(unsigned long pixel)
 	result = pixel & 0xFF00;
 	// Je décale le résultat de 8 bits à droite
 	result >>= 8; // ou result = result >> 8 ;
-	return (unsigned char) result; // on retourne le niveau de vert
+	return (unsigned char)result; // on retourne le niveau de vert
 }
 
 /*==============================================
@@ -106,7 +106,7 @@ unsigned char niveauDeRouge(unsigned long pixel)
 	result = pixel & 0xFF0000;
 	// Je décale le résultat de 8 bits à droite
 	result >>= 16; // ou result = result >> 8 ;
-	return (unsigned char) result; // on retourne le niveau de vert
+	return (unsigned char)result; // on retourne le niveau de vert
 }
 
 /*==============================================
@@ -134,7 +134,7 @@ unsigned char niveauDeGris(unsigned long pixel)
 /*==============================================
 Passage en gris
 ===============================================*/
-void passageEnGris(unsigned long & pixelATraiter)
+void passageEnGris(unsigned long& pixelATraiter)
 {
 	unsigned r, v, b, gris;
 	// Appeler les fonctions de l’ex7 pour extraire r, v et b
@@ -148,3 +148,41 @@ void passageEnGris(unsigned long & pixelATraiter)
 	pixelATraiter = gris + (gris << 8) + (gris << 16);
 }
 
+
+/*==============================================
+fonction que j'ai rajouté
+===============================================*/
+void changeluminosite(unsigned long& pixel, int pourcentage)
+{
+	int gris;
+	gris = niveauDeGris(pixel);
+
+
+
+	gris = gris * (1 + (pourcentage / 100.0));
+
+	if (gris < 0)
+	{
+		gris = 0;
+	}
+	if (gris > 255)
+	{
+		gris = 255;
+	}
+	pixel = gris + (gris << 8) + (gris << 16);
+
+}
+
+
+void changeLuminosite(unsigned long** pixels, unsigned hauteur, unsigned largeur, int pourcentage)
+{
+	unsigned i, j;
+
+	for (i = 0; i < hauteur; i++)
+	{
+		for (j = 0; j < largeur; j++)
+		{
+			changeluminosite(pixels[i][j], pourcentage);
+		}
+	}
+}

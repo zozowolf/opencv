@@ -40,11 +40,13 @@ int main()
 		j = 2950;
 		for (jlune = 0; jlune < largeurLune; jlune++)
 		{
-			pixelsImage[i][j] = pixelsLune[ilune][jlune];
+			pixelsImage[i][j] = pixelsLune[ilune][jlune] ;
 			j++;
 		}
 		i++;
 	}
+
+
 	
 	// On stocke le tableau pixels dans la frame avant son affichage 
 	PixelsToFrame(imgPlaceStan, largeurImage, hauteurImage, pixelsImage);

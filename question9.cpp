@@ -40,21 +40,26 @@ int main()
 		// Modifier la variable luminosité en l'incrémentant ou la décrémentant
 		// en fonction de la touche appuyée. 
 		//...
-		//
+		if (waitKey(50) == '+') //On attend pendant 50 millisecondes si on appuie sur '+'
+		{
+			//……… Ecrire le code pour éclaircir ici
+			
+			luminosite += 5;
+		}
+		if (waitKey(50) == '-')
+		{
+			//……… Ecrire le code pour assombrir ici
+			
+			luminosite -= 5;
+		}
 		//=====================================================================
 		// Complétez le code qui suit aux endroits indiqués
 		if (luminosite != oldLuminosite) // si la luminosité a changé
 		{
+			cout << luminosite << endl;
 			// Appeler la fonction changeLuminosite
 			//…
-			if (waitKey(50) == '+') //On attend pendant 50 millisecondes si on appuie sur '+'
-			{
-				//……… Ecrire le code pour éclaircir ici
-			}
-			if (waitKey(50) == '-')
-			{
-				//……… Ecrire le code pour assombrir ici
-			}
+			changeLuminosite(pixels, hauteur,  largeur, luminosite);
 
 			// On stocke le tableau pixels dans la frame avant son affichage 
 			PixelsToFrame(img, largeur, hauteur, pixels);
@@ -66,6 +71,13 @@ int main()
 
 			// Recopier le tableau de pixels initial dans le tableau pixels
 			//…
+			for (i = 0; i < hauteur; i++)
+			{
+				for (j = 0; j < largeur; j++)
+					pixels[i][j] = memo[i][j] ;
+			}
+
+
 			oldLuminosite = luminosite;
 		}
 	}

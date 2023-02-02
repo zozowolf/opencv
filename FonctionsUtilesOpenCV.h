@@ -62,3 +62,10 @@ Passage en gris
 void passageEnGris(unsigned long & pixelATraiter);
 
 
+
+/*==============================================
+fonction que j'ai rajouté
+===============================================*/
+void changeluminosite(unsigned long & pixel, int pourcentage);
+
+void changeLuminosite(unsigned long** pixels, unsigned hauteur, unsigned largeur, int pourcentage);

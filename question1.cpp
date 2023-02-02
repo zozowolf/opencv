@@ -32,25 +32,25 @@ int main()
 	for (i = 0; i < 6; i++)
 	{
 		for (j = 0; j < largeur; j++)
-			pixels[i][j] = pixels[i][j] & 0xFFFF00;
+			pixels[i][j] =  0xFFFF00;
 	}
 
 	for (i = hauteur - 6; i < hauteur; i++)
 	{
 		for (j = 0; j < largeur; j++)
-			pixels[i][j] = pixels[i][j] & 0xFFFF00;
+			pixels[i][j] = 0xFFFF00;
 	}
 
 	for (j = 0; j < 6; j++)
 	{
 		for (i = 0; i < hauteur; i++)
-			pixels[i][j] = pixels[i][j] & 0xFFFF00;
+			pixels[i][j] = 0xFFFF00;
 	}
 
 	for (j = largeur - 6; j < largeur; j++)
 	{
 		for (i = 0; i < hauteur; i++)
-			pixels[i][j] = pixels[i][j] & 0xFFFF00;
+			pixels[i][j] =  0xFFFF00;
 	}
 
 
