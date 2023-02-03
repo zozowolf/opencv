@@ -1,55 +1,64 @@
 /*************************************************
-Changement de luminosité de l'image
+Affichage de la Webcam
 *************************************************/
 #include <iostream> // bibliothèque de gestion des E/S
+#include <opencv2\opencv.hpp>
+#include <opencv2\highgui.hpp>
 #include "FonctionsUtilesOpenCV.h"
 
 using namespace std; // utilisation de l'espace de nommage standard
+using namespace cv;
 const char ECHAP = 27;
-
 /*==============================================
 Fonction principale
 ===============================================*/
 int main()
 {
-	// Lecture d'une image et stockage dans la variable img
-	Mat img = imread("./medias/informaticienGris.jpg");
-	Mat imgEcran; // image précédente avec des dimensions compatibles écran
+	bool bSuccess;
+	Mat frame;
+	Mat imgEcran;
+	VideoCapture cap("./medias/monaLisa.wmv"); // ouverture du flux caméra numéro 0
 
-	if (img.empty()) //test si l'image a pu être trouvée
+	if (!cap.isOpened()) // si échec, on quitte le programme
 	{
-		cout << "Erreur : Image non chargée..!!" << endl;
+		cout << "video non trouvée" << endl;
 		cin.get(); cin.ignore();
 		return EXIT_FAILURE;
 	}
-
 	// Récupération des pixels de l'image 
 	unsigned long** pixels = NULL, ** memo = NULL;
 	unsigned int largeur, hauteur, i, j;
 	int luminosite = 0, oldLuminosite = -1;
 
-	// On convertit la frame en un tableau 2D nommé pixels et on alloue la mémoire
-	frameToPixels(img, largeur, hauteur, pixels, true);
 
-	// On mémorise les pixels de départ dans un tableau nommé memo
-	frameToPixels(img, largeur, hauteur, memo, true);
 
 	while (1)
 	{
+		bSuccess = cap.read(frame); // lecture d'une frame
+		if (!bSuccess) //si échec, on sort de la boucle infinie
+		{
+			cout << "Impossible de lire le flux vidéo" << endl;
+			break;
+		}
+		// On convertit la frame en un tableau 2D nommé pixels et on alloue la mémoire
+		frameToPixels(frame, largeur, hauteur, pixels, true);
+
+		// On mémorise les pixels de départ dans un tableau nommé memo
+		frameToPixels(frame, largeur, hauteur, memo, true);
+
 		//===================================================================
 		// Modifier la variable luminosité en l'incrémentant ou la décrémentant
 		// en fonction de la touche appuyée. 
-		//...
 		if (waitKey(50) == '+') //On attend pendant 50 millisecondes si on appuie sur '+'
 		{
-			//……… Ecrire le code pour éclaircir ici
-			
+
+
 			luminosite += 5;
 		}
 		if (waitKey(50) == '-')
 		{
-			//……… Ecrire le code pour assombrir ici
-			
+
+
 			luminosite -= 5;
 		}
 		//=====================================================================
@@ -59,28 +68,38 @@ int main()
 			cout << luminosite << endl;
 			// Appeler la fonction changeLuminosite
 			//…
-			changeLuminosite(pixels, hauteur,  largeur, luminosite);
+			changeLuminosite(pixels, hauteur, largeur, luminosite);
 
 			// On stocke le tableau pixels dans la frame avant son affichage 
-			PixelsToFrame(img, largeur, hauteur, pixels);
+			PixelsToFrame(frame, largeur, hauteur, pixels);
 
 			// on redimensionne la fenêtre avant affichage écran
-			resize(img, imgEcran, Size(1024, hauteur * 1024 / largeur));
+			resize(frame, imgEcran, Size(1024, hauteur * 1024 / largeur));
 
-			imshow("Changement Luminosité", imgEcran);
+			
 
 			// Recopier le tableau de pixels initial dans le tableau pixels
 			//…
 			for (i = 0; i < hauteur; i++)
 			{
 				for (j = 0; j < largeur; j++)
-					pixels[i][j] = memo[i][j] ;
+					pixels[i][j] = memo[i][j];
 			}
 
 
 			oldLuminosite = luminosite;
 		}
+		imshow("Changement Luminosité", imgEcran);
+
+		imshow("Fenetre webcam", frame); //On attribue un titre à la fenêtre
+		 // Attente pendant 30 millisecondes de l'appui sur ECHAP. Si oui, on sort
+		if (waitKey(30) == ECHAP)
+		{
+			cout << "Touche ECHAP appuyée" << endl;
+			break;
+		}
 	}
-	cin.get(); cin.ignore();
-	return EXIT_SUCCESS;
+	cout << "Appuyer sur une touche dans la console pour terminer le programme " << endl;
+	cin.get(); cin.ignore(); // attente d'appui sur une touche
+	return EXIT_SUCCESS; // sortie du programme
 }
